@@ -4,9 +4,9 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var jwt = require('express-jwt');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var login = require('./routes/login');
 
 var app = express();
 
@@ -22,10 +22,40 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+/**
+ * UNPROTECTED ROUTES
+ */
+app.use('/login', login);
 
-// catch 404 and forward to error handler
+
+// Apply jwt-verification for every other url
+app.use(jwt({ secret: process.env.SHARED_SECRET || "SHARED_SECRET" }));
+// If UnauthorizedError and is viewed in browser then redirect to login
+app.use(function (err, req, res, next) { 
+  if (err.name === 'UnauthorizedError') {
+    res.format({
+      // Redirect to login if requester is viewer
+      html: function() {
+        res.redirect('/login');
+      },
+
+      // Send 403 FORBIDDEN if requester is for api
+      json: function() {
+        res.sendStatus(403);
+      }
+    });
+  }
+});
+
+/**
+ * PROTECTED ROUTES
+ */
+app.use('/', login)
+
+
+/**
+ * Error handling
+ */
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
