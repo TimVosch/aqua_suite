@@ -6,15 +6,15 @@ html
         link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u', crossorigin='anonymous')
         link(rel='stylesheet', href='/stylesheets/style.css')
 body
-    div.container
-        div.row(style='padding-top: 100px;')
-            div.col-sm-12.col-md-9.col-md-offset-1
-                div.panel.panel-primary
-                    div.panel-heading
+    .container
+        .row(style='padding-top: 100px;')
+            .col-sm-12.col-md-9.col-md-offset-1
+                .panel.panel-primary
+                    .panel-heading
                         strong
                             |Git2Log 
                         |- #{pageName}
-                    div.panel-body
+                    .panel-body
                         block content
 
     block scripts
