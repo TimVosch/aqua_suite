@@ -1,7 +1,26 @@
 extends layout_slim
 
 block content
-    p hey
+    .form-horizontal
+        //- Username input
+        .form-group
+            label.col-sm-4.control-label(for='username')
+                |Username
+            .col-sm-8
+                input.form-control(type='text', name='username')
+        //- Userpassword input
+        .form-group
+            label.col-sm-4.control-label(for='username')
+                |Password
+            .col-sm-8
+                input.form-control(type='password', name='userpassword')
+        .form-group
+            .col-sm-6.col-sm-offset-6
+                a.btn(href="/register").pull-left
+                    |Register
+                button#loginButton.btn.btn-primary.pull-right
+                    |Login
+        
 
 block scripts
     script(type='text/javascript', src='/javascripts/page_login.js')
