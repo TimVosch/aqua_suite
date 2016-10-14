@@ -4,9 +4,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var jwt = require('express-jwt');
 
+// routes
 var login = require('./routes/login');
+
+// middleware
+var jwt = require('./middleware/jwt');
 
 var app = express();
 
@@ -23,16 +26,23 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 /**
- * UNPROTECTED ROUTES
+ * ROUTES
  */
 app.use('/login', login);
+// app.use('/logs', jwt, login)
 
+/**
+ * Error handling
+ */
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 
-// Apply jwt-verification for every other url
-app.use(jwt({ secret: process.env.SHARED_SECRET || "SHARED_SECRET" }));
 // If UnauthorizedError and is viewed in browser then redirect to login
 app.use(function (err, req, res, next) { 
-  if (err.name === 'UnauthorizedError') {
+  if (err.name === 'UnauthorizedError' && err.status == 401) {
     res.format({
       // Redirect to login if requester is viewer
       html: function() {
@@ -45,24 +55,8 @@ app.use(function (err, req, res, next) {
       }
     });
   }
-});
-
-/**
- * PROTECTED ROUTES
- */
-app.use('/', login)
-
-
-/**
- * Error handling
- */
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
   next(err);
 });
-
-// error handlers
 
 // development error handler
 // will print stacktrace
@@ -70,7 +64,7 @@ if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
-      message: err.message,
+      pageName: err.message,
       error: err
     });
   });
@@ -81,10 +75,9 @@ if (app.get('env') === 'development') {
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
-    message: err.message,
+    pageName: err.message,
     error: {}
   });
 });
-
 
 module.exports = app;
