@@ -8,11 +8,14 @@ var Promise = require("bluebird");
 var dotenv = require('dotenv');
 dotenv.config({silent: true});
 
-// routes
+// Routes
 var login = require('./routes/login');
 
-// middleware
+// Middleware
 var jwt = require('./middleware/jwt');
+
+// Other
+var sequelize = require('./database');
 
 var app = express();
 
