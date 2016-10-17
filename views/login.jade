@@ -13,13 +13,16 @@ block content
             label.col-sm-4.control-label(for='username')
                 |Password
             .col-sm-8
-                input.form-control(type='password', name='userpassword')
+                input.form-control(type='password', name='password')
         .form-group
             .col-sm-6.col-sm-offset-6
                 a.btn(href="/register").pull-left
                     |Register
                 button#loginButton.btn.btn-primary.pull-right
                     |Login
+        .row
+            .col-sm-12.text-center
+                span#loginMessage
         
 
 block scripts
