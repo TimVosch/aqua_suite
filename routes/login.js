@@ -12,8 +12,17 @@ router.get('/', function (req, res, next) {
         },
 
         json: function() {
-            return res.json({error: true, message: "POST for api login"});
+            return res.json({error: true, message: "POST for api login, GET to check token"});
         }
+    });
+});
+
+router.get('/:token', function (req, res, next) { 
+    jwt.verify(req.params.token, process.env.SHARED_SECRET, function (err, payload) {
+        if (err) {
+            return res.send({ error: true, message: "Token is invalid"});
+        }
+        return res.send({ valid: true, message: "Token is valid" });
     });
 });
 
