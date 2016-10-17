@@ -37,7 +37,7 @@ router.post('/', function (req, res, next) {
                 var token = jwt.sign({
                     username: account.username,
                     firstname: account.firstname
-                }, process.env.SHARED_SECRET);
+                }, process.env.SHARED_SECRET, { expiresIn: 60 * 60 * 12 });
                 return res.json({ token });
             } else {
                 return res.json({ error: true, message: "Login failed" });
