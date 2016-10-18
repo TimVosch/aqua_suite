@@ -11,7 +11,7 @@ router.get('/', function (req, res, next) {
     if (req.user) {
         res.format({
             html: function() {
-                return res.render('login_active', json);
+                return res.render('login/login_active', json);
             },
 
             json: function() {
@@ -23,7 +23,7 @@ router.get('/', function (req, res, next) {
     // Display login view
     res.format({
         html: function() {
-            return res.render('login', json);
+            return res.render('login/login', json);
         },
 
         json: function() {
