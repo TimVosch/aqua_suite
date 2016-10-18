@@ -10,6 +10,7 @@ dotenv.config({ silent: true });
 
 // Routes
 var login = require('./routes/login');
+var frontpage = require('./routes/frontpage');
 
 // Middleware
 var jwt = require('./middleware/jwt');
@@ -47,6 +48,7 @@ app.use('/login', jsonwebtoken({
         return null;
     }
 }), login);
+app.use('/', jwt, frontpage);
 // app.use('/logs', jwt, login)
 
 /**
