@@ -66,12 +66,12 @@ app.use(function (err, req, res, next) {
         res.format({
             // Redirect to login if requester is viewer
             html: function () {
-                res.redirect('/login');
+                return res.redirect('/login');
             },
 
             // Send 403 FORBIDDEN if requester is for api
             json: function () {
-                res.sendStatus(403);
+                return res.sendStatus(403);
             }
         });
     }
