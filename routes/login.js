@@ -5,7 +5,10 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/', function (req, res, next) {
-    var json = { pageName: 'login' };
+    var json = { pageName: 'login'};
+    if (req.user) {
+        return res.redirect('/');
+    }
     res.format({
         html: function() {
             return res.render('login', json);
