@@ -1,0 +1,7 @@
+.panel-primary .panel-heading a {
+    color: #fff;
+}
+
+.panel-primary .panel-heading a:hover {
+    color: #eee;
+}
