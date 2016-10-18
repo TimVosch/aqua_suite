@@ -5,10 +5,22 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/', function (req, res, next) {
-    var json = { pageName: 'login'};
+    var json = { pageName: 'login', user: req.user};
+
+    // Display view of loggedin user
     if (req.user) {
-        return res.redirect('/');
+        res.format({
+            html: function() {
+                return res.render('login_active', json);
+            },
+
+            json: function() {
+                return res.json({error: true, message: "POST for api login, GET to check token"});
+            }
+        });
     }
+
+    // Display login view
     res.format({
         html: function() {
             return res.render('login', json);

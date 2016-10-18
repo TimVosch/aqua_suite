@@ -1,0 +1,14 @@
+extends layout_slim
+
+block content
+    .row
+        .col-sm-12.text-center
+            |Welcome, #{user.firstname}
+    .row(style="margin-top: 20px;")
+        .col-sm-12.text-right
+            a.btn.btn-danger#logoutBtn
+                span.glyphicon.glyphicon-shutdown
+                | Logout...
+
+block scripts
+    script(type='text/javascript', src='/javascripts/page_login_active.js')
