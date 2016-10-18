@@ -5,11 +5,11 @@ router.use('/', function (req, res ,next) {
     var json = { user: req.user, pageName: req.user.firstname + '\'s Dashboard' };
     res.format({
         html: function() {
-            res.render('frontpage', json);
+            return res.render('frontpage', json);
         },
 
         json: function() {
-            res.json(json);
+            return res.json(json);
         }
     });
 });
