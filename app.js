@@ -41,9 +41,8 @@ app.use('/login', jsonwebtoken({
     getToken: function (req) {
         if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
             return req.headers.authorization.split(' ')[1];
-        } else if (req.cookies.token) {
-            console.log("cookie token found");
-            return req.cookies.token;
+        } else if (req.cookies.jwtoken) {
+            return req.cookies.jwtoken;
         }
         return null;
     }
