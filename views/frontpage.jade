@@ -1,8 +1,32 @@
 extends layouts/layout
 
 block content
-    h4
-        | Welcome #{user.firstname},
+    .row
+        .col-md-7.hide-for-small
+            h4
+                | Welcome #{user.firstname},
+        .col-sm-12.col-md-5
+            .panel.panel-default
+                .panel-heading
+                    span.glyphicon.glyphicon-star
+                    | &nbsp;Quickstart
+                .panel-body
+                    span
+                        | Can't find what you're looking for? Start here!
+                    hr
+                    a.btn.btn-default.btn-block(href='/logs/create')
+                        span.pull-left.glyphicon.glyphicon-plus
+                        | Create new log
+                    a.btn.btn-default.btn-block(href='/logs/find/self')
+                        span.pull-left.glyphicon.glyphicon-user
+                        | View your logs
+                    a.btn.btn-default.btn-block(href='/logs/find/all')
+                        span.pull-left.glyphicon.glyphicon-search
+                        | View all logs
+                    a.btn.btn-default.btn-block(href='/settings')
+                        span.pull-left.glyphicon.glyphicon-wrench
+                        | Your settings
+    
 
 block heading_content
     a(href='/login')
