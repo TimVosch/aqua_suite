@@ -5,10 +5,13 @@ block content
         .col-sm-12.text-center
             |Welcome, #{user.firstname}
     .row(style="margin-top: 20px;")
-        .col-sm-12.text-right
-            a.btn.btn-danger#logoutBtn
+        .col-sm-12
+            a.btn.btn-success.pull-left(href='/')
+                span.glyphicon.glyphicon-arrow-left
+                | &nbsp;Back
+            a.btn.btn-danger.pull-right#logoutBtn
                 span.glyphicon.glyphicon-off
-                | Logout...
+                | &nbsp;Logout...
 
 block scripts
     script(type='text/javascript', src='/javascripts/page_login_active.js')
