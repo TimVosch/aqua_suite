@@ -12,6 +12,7 @@ dotenv.config({ silent: true });
 var login = require('./routes/login');
 var frontpage = require('./routes/frontpage');
 var logs = require('./routes/logs');
+var users = require('./routes/users');
 
 // Middleware
 var jwt = require('./middleware/jwt');
@@ -50,7 +51,7 @@ app.use('/login', jsonwebtoken({
     }
 }), login);
 app.use('/logs', jwt, logs);
-
+app.use('/users', jwt, users);
 // Make sure to specify the most upper route as last
 app.use('/', jwt, frontpage);
 
