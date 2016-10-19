@@ -19,6 +19,9 @@ var account = db.define('account', {
     },
     firstname: {
         type: Sequelize.STRING
+    },
+    githubname: {
+        type: Sequelize.STRING
     }
 });
 

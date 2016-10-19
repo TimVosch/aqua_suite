@@ -52,7 +52,8 @@ router.post('/', function (req, res, next) {
                 var token = jwt.sign({
                     id: account.id,
                     username: account.username,
-                    firstname: account.firstname
+                    firstname: account.firstname,
+                    githubname: account.githubname
                 }, process.env.SHARED_SECRET, { expiresIn: 60 * 60 * 12 });
                 return res.json({ token });
             } else {
