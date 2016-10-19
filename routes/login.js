@@ -1,4 +1,4 @@
-var Account = require('../models/account');
+var user = require('../models/user');
 var jwt = require('jsonwebtoken');
 
 var express = require('express');
@@ -46,14 +46,14 @@ router.post('/', function (req, res, next) {
         return res.json({error: true, message: "Missing username or password"});
     }
     
-    return Account.findOne({ where: { username: req.body.username } })
-        .then(function (account){
-            if ( account && account.get('password') == req.body.password) {
+    return user.findOne({ where: { username: req.body.username } })
+        .then(function (_user){
+            if ( _user && _user.get('password') == req.body.password) {
                 var token = jwt.sign({
-                    id: account.id,
-                    username: account.username,
-                    firstname: account.firstname,
-                    githubname: account.githubname
+                    id: _user.id,
+                    username: _user.username,
+                    firstname: _user.firstname,
+                    githubname: _user.githubname
                 }, process.env.SHARED_SECRET, { expiresIn: 60 * 60 * 12 });
                 return res.json({ token });
             } else {

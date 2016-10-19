@@ -10,7 +10,7 @@ var db = require('../database');
 /**
  * Defining
  */
-var account = db.define('account', {
+var user = db.define('user', {
     username: {
         type: Sequelize.STRING
     },
@@ -32,8 +32,8 @@ var account = db.define('account', {
 /**
  * Synchronise
  */
-account.sync().then(function () {
-    info('Account sync completed')
+user.sync().then(function () {
+    info('User sync completed')
 });
 
-module.exports = account;
+module.exports = user;

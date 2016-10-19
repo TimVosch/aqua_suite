@@ -1,6 +1,6 @@
 var debug = require('debug');
 var info = debug('aqua:database');
-var account = require('./account');
+var user = require('./user');
 
 /**
  * Database
@@ -20,7 +20,7 @@ var log_info = db.define('logInfo', {
 /**
  * Relations
  */
-log_info.belongsTo(account, { as: 'creator', constraints: false });
+log_info.belongsTo(user, { as: 'creator', constraints: false });
 
 /**
  * Synchronise

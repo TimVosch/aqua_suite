@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var account = require('../models/account');
+var user = require('../models/user');
 var log_info = require('../models/log_info');
 var log = require('../models/log');
 
