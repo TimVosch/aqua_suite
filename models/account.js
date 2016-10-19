@@ -1,7 +1,16 @@
+var debug = require('debug');
+var info = debug('aqua:database');
+
+/**
+ * Database
+ */
 var Sequelize = require('Sequelize')
 var db = require('../database');
 
-var Account = db.define('account', {
+/**
+ * Defining
+ */
+var account = db.define('account', {
     username: {
         type: Sequelize.STRING
     },
@@ -13,12 +22,15 @@ var Account = db.define('account', {
     }
 });
 
-// Account.sync({force: true}).then(function () {
-//   return Account.create({
-//     username: 'username',
-//     password: 'password',
-//     firstname: 'firstname'
-//   });
-// });
+/**
+ * Relationships
+ */
 
-module.exports = Account;
+/**
+ * Synchronise
+ */
+account.sync().then(function () {
+    info('Account sync completed')
+});
+
+module.exports = account;
