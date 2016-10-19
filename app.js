@@ -11,6 +11,7 @@ dotenv.config({ silent: true });
 // Routes
 var login = require('./routes/login');
 var frontpage = require('./routes/frontpage');
+var logs = require('./routes/logs');
 
 // Middleware
 var jwt = require('./middleware/jwt');
@@ -48,8 +49,10 @@ app.use('/login', jsonwebtoken({
         return null;
     }
 }), login);
+app.use('/logs', jwt, logs);
+
+// Make sure to specify the most upper route as last
 app.use('/', jwt, frontpage);
-// app.use('/logs', jwt, login)
 
 /**
  * Error handling
@@ -83,7 +86,7 @@ app.use(function (err, req, res, next) {
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
         res.status(err.status || 500);
-        res.render('error', {
+        return res.render('error', {
             pageName: err.message,
             error: err
         });
