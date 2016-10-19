@@ -46,10 +46,11 @@ router.post('/', function (req, res, next) {
         return res.json({error: true, message: "Missing username or password"});
     }
     
-    Account.findOne({ where: { username: req.body.username } })
+    return Account.findOne({ where: { username: req.body.username } })
         .then(function (account){
-            if (account.get('password') == req.body.password) {
+            if ( account && account.get('password') == req.body.password) {
                 var token = jwt.sign({
+                    id: account.id,
                     username: account.username,
                     firstname: account.firstname
                 }, process.env.SHARED_SECRET, { expiresIn: 60 * 60 * 12 });
