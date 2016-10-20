@@ -42,6 +42,29 @@ block content
                                     .input-group-btn
                                         a.btn.btn-success#setWeek(href='#')
                                             | get
+    .row
+        .col-sm-12
+            .panel.panel-default
+                .panel-heading
+                    span.glyphicon.glyphicon-plus
+                    | &nbsp; Explanation
+                .panel-body
+                    .form-group
+                        label(for='subtitle')
+                            | Subtitle:
+                        input.form-control(name='subtitle', placeholder='E.g. Research week 1', type='text', maxlength='30')
+                    hr
+                    .form-group
+                        label(for='comments')
+                            | Extra comments
+                        textarea.form-control(name='comments', style='resize: vertical;')
+    .row
+        .col-sm-12
+            a.btn.btn-success.pull-right#submitLog(href='#')
+                span.glyphicon.glyphicon-ok
+                | &nbsp; Submit new log
+                    
+
 
 block scripts
     script(type='text/javascript', src='/javascripts/page_logs.js')
