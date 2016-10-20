@@ -12,9 +12,13 @@ router.get('/:name', function (req, res, next) {
 
 router.get('/:name/projects', function (req, res, next) {
     // Find the requested user for his/hers github name
+    var username = req.params.name;
+    if (req.params.name == 'self') {
+        username = req.user.username
+    }
     return user.find({
         where: {
-            username: req.params.name
+            username
         }
     })
     .then(function (_user) {
@@ -25,10 +29,14 @@ router.get('/:name/projects', function (req, res, next) {
             headers: {
                 'Accept': 'application/vnd.github.v3+json',
                 'user-agent': 'aqua_suite'
+            },
+            auth: {
+                user: process.env.GITHUB_USERNAME,
+                pass: process.env.GITHUB_PASSWORD
             }
         }, function(error, response, body){
-            gitapi_info(response.statusCode);
-            if (!error && response.statusCode >= 400) {
+            if (response.statusCode >= 400) {
+                gitapi_info('error -> ' + body);
                 return res.json({ error: true, message: 'Github api reported an error' });
             }
             // Find all and calculate project age in weeks
@@ -56,6 +64,51 @@ router.get('/:name/projects', function (req, res, next) {
                 projects.push(_project);
             }
             res.json(projects);
+        });
+    });
+});
+
+router.get('/:name/projects/:repo_owner/:repo_name', function (req, res, next) {
+    // Find the requested user for his/hers github name
+    var username = req.params.name;
+    if (req.params.name == 'self') {
+        username = req.user.username
+    }
+    return user.find({
+        where: {
+            username
+        }
+    })
+    .then(function (_user) {
+        var _since = new Date(parseInt(req.query.since));
+        var _until = new Date(parseInt(req.query.until));
+        request({
+                url: 'https://api.github.com/repos/' + req.params.repo_owner + '/' + req.params.repo_name + '/commits?author=' + _user.githubname + '&since=' + _since.toISOString() + '&until=' + _until.toISOString(),
+                headers: {
+                    'Accept': 'application/vnd.github.v3+json',
+                    'user-agent': 'aqua_suite'
+                },
+                auth: {
+                    user: process.env.GITHUB_USERNAME,
+                    pass: process.env.GITHUB_PASSWORD
+                }
+        }, function (error, response, body) {
+            if (response.statusCode >= 400) {
+                gitapi_info('error -> ' + body);
+                return res.json({ error: true, message: 'Github api reported an error' });
+            }
+
+            var gitapi_result = JSON.parse(body);
+            var return_result = [];
+            for (var i=0; i < gitapi_result.length; i++) {
+                var _git_commit = gitapi_result[i];
+                var _commit = {};
+                _commit.author = _git_commit.commit.author;
+                _commit.html_url = _git_commit.html_url;
+                _commit.message = _git_commit.commit.message;
+                return_result.push(_commit);
+            }
+            res.json(return_result);
         });
     });
 });
