@@ -1,0 +1,47 @@
+extends ../layouts/layout
+
+block content
+    .row
+        .col-sm-12.col-md-7
+            .panel.panel-default
+                .panel-heading
+                    span.glyphicon.glyphicon-statistic
+                    | &nbsp; Commit history
+                .panel-body(style='max-height: 400px; overflow-y: scroll;')
+                    .list-group#commitsList
+        .col-sm-12.col-md-5
+            .panel.panel-default
+                .panel-heading
+                    span.glyphicon.glyphicon-download
+                    | &nbsp; Retrieve commits
+                .panel-body
+                    form.form-horizontal
+                        //- Github name group
+                        .form-group
+                            label.col-sm-4.control-label(for='githubname')
+                                | Name:
+                            .col-sm-8
+                                input.form-control(type='text', name='githubname', value='#{user.githubname}', disabled)
+                        //- Github repositories choices
+                        .form-group
+                            label.col-sm-4.control-label(for='githubrepo')
+                                | Repo:
+                            .col-sm-8
+                                .input-group
+                                    select.form-control(name='githubrepo')
+                                    .input-group-btn
+                                        a.btn.btn-success#setGithubRepo(href='#')
+                                            | set
+                        //- Project week choice
+                        .form-group
+                            label.col-sm-4.control-label(for='week')
+                                | Week:
+                            .col-sm-8
+                                .input-group
+                                    select.form-control(name='week')
+                                    .input-group-btn
+                                        a.btn.btn-success#setWeek(href='#')
+                                            | get
+
+block scripts
+    script(type='text/javascript', src='/javascripts/page_logs.js')
