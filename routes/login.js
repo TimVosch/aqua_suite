@@ -56,20 +56,28 @@ router.get('/:token', function (req, res, next) {
 });
 
 /**
- * Create a session (AKA logging in)
+ * Create a session (AKA login)
  */
 router.post('/', function (req, res, next) {
-    if (!req.body.username || !req.body.password) {
-        return res.json({error: true, message: "Missing username or password"});
-    }
-    login.createSession(req.body.username, req.body.password)
-        .then(function (token) {
-            res.json(token);
-        })
-        .catch(function (error) {
-            res.status(403);
-            res.json({ error: true, message: error });
-        });
+    return res.format({
+        html: function() {
+            res.send('This route is for the api.');
+        },
+
+        json: function() {
+            if (!req.body.username || !req.body.password) {
+                return res.json({error: true, message: "Missing username or password"});
+            }
+            login.createSession(req.body.username, req.body.password)
+            .then(function (token) {
+                res.json(token);
+            })
+            .catch(function (error) {
+                res.status(403);
+                res.json({ error: true, message: error });
+            });
+        }
+    });
 });
 
 module.exports = router;
