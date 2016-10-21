@@ -5,6 +5,10 @@ var login = require('../api/login');
 var express = require('express');
 var router = express.Router();
 
+/**
+ * Get login page or 'session' page (contains logout button)
+ * This has no API functionality
+ */
 router.get('/', function (req, res, next) {
     var json = { pageName: 'login', user: req.user};
 
@@ -51,24 +55,20 @@ router.get('/:token', function (req, res, next) {
     });
 });
 
+/**
+ * Create a session (AKA logging in)
+ */
 router.post('/', function (req, res, next) {
     if (!req.body.username || !req.body.password) {
         return res.json({error: true, message: "Missing username or password"});
     }
-    
-    return user.findOne({ where: { username: req.body.username } })
-        .then(function (_user){
-            if ( _user && _user.get('password') == req.body.password) {
-                var token = jwt.sign({
-                    id: _user.id,
-                    username: _user.username,
-                    firstname: _user.firstname,
-                    githubname: _user.githubname
-                }, process.env.SHARED_SECRET, { expiresIn: 60 * 60 * 12 });
-                return res.json({ token });
-            } else {
-                return res.json({ error: true, message: "Login failed" });
-            }
+    login.createSession(req.body.username, req.body.password)
+        .then(function (token) {
+            res.json(token);
+        })
+        .catch(function (error) {
+            res.status(403);
+            res.json({ error: true, message: error });
         });
 });
 
