@@ -9,7 +9,7 @@ router.get('/', function (req, res, next) {
 
     // Display view of loggedin user
     if (req.user) {
-        res.format({
+        return res.format({
             html: function() {
                 return res.render('login/login_active', json);
             },
@@ -21,7 +21,7 @@ router.get('/', function (req, res, next) {
     }
 
     // Display login view
-    res.format({
+    return res.format({
         html: function() {
             return res.render('login/login', json);
         },
