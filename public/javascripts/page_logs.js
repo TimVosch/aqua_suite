@@ -41,9 +41,9 @@ $('#setWeek').on('click', function () {
     _until.setDate(_until.getDate() + 7);
     
     // Get user commits
-    $.getJSON('/users/self/projects/'+selectedProject.fullname, { since: _since.getTime(), until: _until.getTime() })
+    $.getJSON('/users/self/projects/' + selectedProject.fullname + '/commits', { since: _since.getTime(), until: _until.getTime() })
     .done(function (data) {
-        console.log(data);
+        selectedProject.commits = data;
         // data[?].commit.message
         $('#commitsList').html('');
         // Go through commits and add them to the list
@@ -64,4 +64,28 @@ $('#setWeek').on('click', function () {
     .fail(function (err) {
         console.error(err);
     });
+});
+
+$('#submitLog').on('click', function () {
+    // Pre-Assignment
+    var _commits = selectedProject.commits;
+    var _repo = selectedProject.fullname;
+    var _week = week;
+    var _subtitle = $('input[name="subtitle"]').val();
+    var _comments = $('textarea[name="comments"]').val();
+    // Validation
+
+    // Bundling (make one object)
+    var data = {
+        project: _repo,
+        week: _week,
+        subtitle: _subtitle,
+        comments: _comments
+    };
+    // POST to api
+    $.post('/logs/create', data)
+    .done(function (_data) {
+        console.log('success', _data);
+    });
+    // Redirect to view log
 });
