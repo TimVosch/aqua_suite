@@ -79,7 +79,6 @@ app.use(function (err, req, res, next) {
             }
         });
     }
-    next(err);
 });
 
 // development error handler
