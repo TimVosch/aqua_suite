@@ -1,5 +1,6 @@
 var user = require('../models/user');
 var jwt = require('jsonwebtoken');
+var login = require('../api/login');
 
 var express = require('express');
 var router = express.Router();
@@ -32,12 +33,21 @@ router.get('/', function (req, res, next) {
     });
 });
 
+/**
+ * Used to verify tokens/sessions
+ */
 router.get('/:token', function (req, res, next) { 
-    jwt.verify(req.params.token, process.env.SHARED_SECRET, function (err, payload) {
-        if (err) {
-            return res.send({ error: true, message: "Token is invalid"});
+    return res.format({
+        html: function() {
+            res.send('This route is for the api.');
+        },
+
+        json: function() {
+            login.verifySession(req.params.token)
+                .then(function (valid) {
+                    res.json({ valid });
+                });
         }
-        return res.send({ valid: true, message: "Token is valid" });
     });
 });
 
