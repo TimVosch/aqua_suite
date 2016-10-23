@@ -12,23 +12,15 @@ var router = express.Router();
 router.get('/', function (req, res, next) {
     var json = { pageName: 'login', user: req.user};
 
-    // Display view of loggedin user
-    if (req.user) {
-        return res.format({
-            html: function() {
-                return res.render('login/login_active', json);
-            },
-
-            json: function() {
-                return res.json({error: true, message: "POST for api login, GET to check token"});
-            }
-        });
-    }
-
-    // Display login view
     return res.format({
         html: function() {
-            return res.render('login/login', json);
+            if (req.user) {
+                // Display logout view
+                return res.render('login/login_active', json);
+            } else {
+                // Display login view
+                return res.render('login/login', json);
+            }
         },
 
         json: function() {
@@ -59,24 +51,16 @@ router.get('/:token', function (req, res, next) {
  * Create a session (AKA login)
  */
 router.post('/', function (req, res, next) {
-    return res.format({
-        html: function() {
-            res.send('This route is for the api.');
-        },
-
-        json: function() {
-            if (!req.body.username || !req.body.password) {
-                return res.json({error: true, message: "Missing username or password"});
-            }
-            login.createSession(req.body.username, req.body.password)
-            .then(function (token) {
-                res.json({token});
-            })
-            .catch(function (error) {
-                res.status(403);
-                res.json({ error: true, message: error });
-            });
-        }
+    if (!req.body.username || !req.body.password) {
+        return res.json({error: true, message: "Missing username or password"});
+    }
+    login.createSession(req.body.username, req.body.password)
+    .then(function (token) {
+        res.json({token});
+    })
+    .catch(function (error) {
+        res.status(403);
+        res.json({ error: true, message: error });
     });
 });
 
