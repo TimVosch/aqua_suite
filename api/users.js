@@ -106,4 +106,69 @@ users.getUserProject = function(username, repo_owner, repo_name) {
     });
 };
 
+/**
+ * Retrieve commits from a user's project
+ */
+users.getProjectCommits = function(username, repo_owner, repo_name, since, until) {
+    var since = new Date(parseInt(since));
+    var until = new Date(parseInt(until));
+    var githubname = undefined;
+    return new Promise(function (resolve, reject) {
+        // Check if user is involved
+        user_model.findOne({
+            where: {
+                username
+            }
+        })
+        .then(function (user){
+            if (user === null || typeof user === typeof undefined) {
+                return reject('User was not found');
+            }
+            githubname = user.githubname;
+            return users.getUserProject(username, repo_owner, repo_name)
+        })
+        .then(function (result) {
+            // Find user commits
+            info('https://api.github.com/repos/' + result.fullname + '/commits?author=' + githubname + '&since=' + since.toISOString() + '&until=' + until.toISOString());
+            request({
+                url: 'https://api.github.com/repos/' + result.fullname + '/commits?author=' + githubname + '&since=' + since.toISOString() + '&until=' + until.toISOString(),
+                headers: {
+                    'Accept': 'application/vnd.github.v3+json',
+                    'user-agent': 'aqua_suite'
+                },
+                auth: {
+                    user: process.env.GITHUB_USERNAME,
+                    pass: process.env.GITHUB_PASSWORD
+                }
+            }, function (error, response, body) {
+                // After receiving a response
+                // Handle errors
+                if (error){
+                    info('getUserProjects: githubapi returned an error: ', error);
+                    return reject(error);
+                }else if(response.statusCode >= 400) {
+                    info('getUserProjects: githubapi returned an error: ', body);
+                    return reject(body);
+                }
+                // Parse response body
+                var gitapi_result = JSON.parse(body);
+                var return_result = [];
+                for (var i=0; i < gitapi_result.length; i++) {
+                    var _git_commit = gitapi_result[i];
+                    var _commit = {};
+                    _commit.author = _git_commit.commit.author;
+                    _commit.html_url = _git_commit.html_url;
+                    _commit.message = _git_commit.commit.message;
+                    return_result.push(_commit);
+                }
+                resolve(return_result);
+            });
+        })
+        .catch(function (e) {
+            info(e);
+            reject(e);
+        })
+    });
+}
+
 module.exports = users;
