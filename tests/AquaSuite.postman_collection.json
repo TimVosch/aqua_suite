@@ -1,0 +1,159 @@
+{
+	"variables": [],
+	"info": {
+		"name": "AquaSuite",
+		"_postman_id": "cecc3c96-31cd-ddab-184f-902fcd47bdaf",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"description": "",
+			"item": [
+				{
+					"name": "Login correct",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\n\nvar jsonData = JSON.parse(responseBody);\n\nvar schema = {\n    \"token\": {\n        \"type\": \"string\"\n    }\n};\n\npostman.setEnvironmentVariable(\"token\", jsonData.token);\ntests[\"Valid json response\"] = tv4.validate(jsonData, schema);\nconsole.log(\"Validation failed: \", tv4.error);"
+							}
+						}
+					],
+					"request": {
+						"url": "localhost:3000/login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"timvosch\",\n\t\"password\": \"password\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Login incorrect",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 403\"] = responseCode.code === 403;\n\nvar schema = {\n    \"error\": {\n    \"type\": \"boolean\"\n    },\n    \"message\": {\n     \"type\": \"string\"\n    }\n};\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Valid json response\"] = tv4.validate(jsonData, schema);\nconsole.log(\"Validation failed: \", tv4.error);\n"
+							}
+						}
+					],
+					"request": {
+						"url": "localhost:3000/login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"timvosch\",\n\t\"password\": \"password123\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"description": "",
+			"item": [
+				{
+					"name": "Get user projects",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\n\nvar jsonData = JSON.parse(responseBody);\n\nvar schema = {\n    \"type\": \"array\"\n};\n\ntests[\"Valid json response\"] = tv4.validate(jsonData, schema);\nconsole.log(\"Validation failed: \", tv4.error);"
+							}
+						}
+					],
+					"request": {
+						"url": "localhost:3000/users/self/projects",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get unexisting user projects",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\n\nvar schema = {\n    \"error\": {\n        \"type\": \"boolean\"\n    },\n    \"message\": {\n        \"type\": \"string\"\n    }\n};\n\ntests[\"Valid json response\"] = tv4.validate(jsonData, schema);\nconsole.log(\"Validation failed: \", tv4.error);"
+							}
+						}
+					],
+					"request": {
+						"url": "localhost:3000/users/unknown/projects",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
