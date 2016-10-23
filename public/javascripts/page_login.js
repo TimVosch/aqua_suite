@@ -1,7 +1,11 @@
 $('#loginButton').on('click', function() {
-    $.post('/login', {
-        username: $('input[name=\'username\']').val(),
-        password: $('input[name=\'password\']').val()
+    $.post({
+        url: '/login',
+        data: {
+            username: $('input[name=\'username\']').val(),
+            password: $('input[name=\'password\']').val()
+        },
+        // dataType: 'json' // Not necessary, only in GET routes
     })
     .done(function (data) {
         if (!data.error && data.token) {
