@@ -36,7 +36,7 @@ $('#setWeek').on('click', function () {
     startDate.setDate(startDate.getDate() - startDate.getDay());
     // Calculate since and until values
     var _since = new Date(startDate);
-    _since.setDate(_since.getDate() + 7*week);
+    _since.setDate(_since.getDate() + 7*(week-1));
     var _until = new Date(_since);
     _until.setDate(_until.getDate() + 7);
     
