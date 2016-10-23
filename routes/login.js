@@ -70,7 +70,7 @@ router.post('/', function (req, res, next) {
             }
             login.createSession(req.body.username, req.body.password)
             .then(function (token) {
-                res.json(token);
+                res.json({token});
             })
             .catch(function (error) {
                 res.status(403);
