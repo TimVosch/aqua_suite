@@ -20,9 +20,9 @@ users.getUserProjects = function (username) {
         })
         .then(function (user) {
             var projects = [];
-            /**
-             * TO CHECK: can user be empty?
-             */
+            if (user === null || typeof user === typeof undefined) {
+                return reject('User was not found');
+            }
             // Get starred repos
             request(
                     {
@@ -40,10 +40,10 @@ users.getUserProjects = function (username) {
                         // Handle errors
                         if (error){
                             info('getUserProjects: githubapi returned an error: ', error);
-                            reject(error);
+                            return reject(error);
                         }else if(response.statusCode >= 400) {
                             info('getUserProjects: githubapi returned an error: ', body);
-                            reject(body);
+                            return reject(body);
                         }
                         // Extract projects data from repos
                         var json = JSON.parse(body);
