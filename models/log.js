@@ -13,7 +13,10 @@ var db = require('../database');
  */
 var log = db.define('log', {
     commitHistory: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT,
+    },
+    comments: {
+        type: Sequelize.TEXT
     }
 });
 
