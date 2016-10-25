@@ -73,7 +73,7 @@ router.get('/:name/projects/:repo_owner/:repo_name/commits', function (req, res,
         username = req.user.username
     }
     // Return specific commits
-    users.getProjectCommits(username, req.params.repo_owner, req.params.repo_name, req.query.since, req.query.until)
+    users.getProjectCommits(username, req.params.repo_owner, req.params.repo_name, new Date(req.query.since), new Date(req.query.until))
         .then(function (result) {
             res.json(result);
         })
