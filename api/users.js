@@ -110,8 +110,6 @@ users.getProject = function(username, repo_owner, repo_name) {
  * Retrieve commits from a user's project
  */
 users.getProjectCommits = function(username, repo_owner, repo_name, since, until) {
-    var since = new Date(parseInt(since));
-    var until = new Date(parseInt(until));
     var githubname = undefined;
     return new Promise(function (resolve, reject) {
         // Check if user is involved
