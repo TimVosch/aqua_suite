@@ -82,6 +82,42 @@
 			]
 		},
 		{
+			"name": "logs",
+			"description": "",
+			"item": [
+				{
+					"name": "Create new log",
+					"request": {
+						"url": "localhost:3000/logs/create",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Title 123\",\n\t\"project\": \"timvosch/aqua\",\n\t\"week\": 5,\n\t\"comments\": \"comments 123\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "users",
 			"description": "",
 			"item": [
@@ -132,6 +168,40 @@
 					],
 					"request": {
 						"url": "localhost:3000/users/unknown/projects",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Request commits",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\n\nvar jsonData = JSON.parse(responseBody);\n\nvar schema = {\n    \"type\": \"array\"\n};\n\ntests[\"Valid json response\"] = tv4.validate(jsonData, schema);\nconsole.log(\"Validation failed: \", tv4.error);"
+							}
+						}
+					],
+					"request": {
+						"url": "localhost:3000/users/self/projects/timvosch/aqua/commits?since=2016-10-09T08:28:44.000Z&until=2016-10-16T08:28:44.000Z",
 						"method": "GET",
 						"header": [
 							{
