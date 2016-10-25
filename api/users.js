@@ -10,7 +10,7 @@ var users = {};
 /**
  * Retrieve all starred repositories for the user
  */
-users.getUserProjects = function (username) {
+users.getProjects = function (username) {
     return new Promise(function (resolve, reject) {
         // Find user in database
         user_model.findOne({
@@ -39,10 +39,10 @@ users.getUserProjects = function (username) {
                         // After receiving a response
                         // Handle errors
                         if (error){
-                            info('getUserProjects: githubapi returned an error: ', error);
+                            info('getProjects: githubapi returned an error: ', error);
                             return reject(error);
                         }else if(response.statusCode >= 400) {
-                            info('getUserProjects: githubapi returned an error: ', body);
+                            info('getProjects: githubapi returned an error: ', body);
                             return reject(body);
                         }
                         // Extract projects data from repos
@@ -84,10 +84,10 @@ users.getUserProjects = function (username) {
 /**
  * Retrieve a single specified repository for the user
  */
-users.getUserProject = function(username, repo_owner, repo_name) {
+users.getProject = function(username, repo_owner, repo_name) {
     return new Promise(function (resolve, reject) {
         // Check if the user is involved in the chosen project
-        users.getUserProjects(username)
+        users.getProjects(username)
         .then(function (result) {
             var _repo_url = (repo_owner + '/' + repo_name).toLowerCase();
             for(var i=0; i < result.length; i++) {
@@ -125,7 +125,7 @@ users.getProjectCommits = function(username, repo_owner, repo_name, since, until
                 return reject('User was not found');
             }
             githubname = user.githubname;
-            return users.getUserProject(username, repo_owner, repo_name)
+            return users.getProject(username, repo_owner, repo_name)
         })
         .then(function (result) {
             // Find user commits
@@ -144,10 +144,10 @@ users.getProjectCommits = function(username, repo_owner, repo_name, since, until
                 // After receiving a response
                 // Handle errors
                 if (error){
-                    info('getUserProjects: githubapi returned an error: ', error);
+                    info('getProjects: githubapi returned an error: ', error);
                     return reject(error);
                 }else if(response.statusCode >= 400) {
-                    info('getUserProjects: githubapi returned an error: ', body);
+                    info('getProjects: githubapi returned an error: ', body);
                     return reject(body);
                 }
                 // Parse response body

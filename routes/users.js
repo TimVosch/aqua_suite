@@ -30,7 +30,7 @@ router.get('/:name/projects', function (req, res, next) {
                 username = req.user.username;
             }
             // return projects
-            users.getUserProjects(username)
+            users.getProjects(username)
             .then(function (result) {
                 res.json(result);
             })
@@ -52,7 +52,7 @@ router.get('/:name/projects/:repo_owner/:repo_name', function (req, res, next) {
         username = req.user.username;
     }
     // return specific information
-    users.getUserProject(username, req.params.repo_owner, req.params.repo_name)
+    users.getProject(username, req.params.repo_owner, req.params.repo_name)
         .then(function (result) {
             res.json(result);
         })
