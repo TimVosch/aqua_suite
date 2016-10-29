@@ -14,6 +14,9 @@ var db = require('../database');
 var log_info = db.define('logInfo', {
     title: {
         type: Sequelize.STRING
+    },
+    project: {
+        type: Sequelize.STRING
     }
 });
 

@@ -26,6 +26,7 @@ logs.createLog = function(username, userId, repo_owner, repo_name, title, commen
                 comments,
                 logInfo: {
                     title,
+                    project: repo_owner + '/' + repo_name,
                     creatorId: userId
                 }
             }, {
