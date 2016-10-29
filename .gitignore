@@ -33,5 +33,6 @@ npm-debug.log
 .env
 
 # VSCode files
+.vscode/
 tasks.json
 jsconfig.json
