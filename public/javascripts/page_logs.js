@@ -41,7 +41,7 @@ $('#setWeek').on('click', function () {
     _until.setDate(_until.getDate() + 7);
     
     // Get user commits
-    $.getJSON('/users/self/projects/' + selectedProject.fullname + '/commits', { since: _since.getTime(), until: _until.getTime() })
+    $.getJSON('/users/self/projects/' + selectedProject.fullname + '/commits', { since: _since.toISOString(), until: _until.toISOString() })
     .done(function (data) {
         selectedProject.commits = data;
         // data[?].commit.message
