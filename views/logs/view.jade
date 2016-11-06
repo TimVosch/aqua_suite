@@ -9,10 +9,10 @@ block content
                 .panel-body
                     div
                         h3.pull-left
-                            i=logInfo.project
-                            | &nbsp; Week #{logInfo.week}
+                            i=log.logInfo.project
+                            | &nbsp; Week #{log.logInfo.week}
                         h3.pull-right
-                            small=logInfo.title
+                            small=log.logInfo.title
                     div.clearfix
                     hr
                     p=log.comments
