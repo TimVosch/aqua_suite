@@ -24,6 +24,26 @@ router.get('/find', function (req, res, next) {
     });
 });
 
+router.get('/get/:id', function (req, res, next) {
+    var json = {
+        pageName: "Viewing log",
+    }
+    log.findById(req.params.id, { include: [log_info] }).then(function(Log) {
+        var commitHistory = JSON.parse(Log.commitHistory);
+        Log.commitHistory = commitHistory;
+        json.log = Log;
+        return res.format({
+            html: function (){
+                res.render('logs/view', json);
+            },
+
+            json: function (){
+                res.json(json);
+            }
+        })
+    });
+})
+
 /**
  * Creates a new log in the database
  * body:
