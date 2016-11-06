@@ -24,6 +24,7 @@ var log = db.define('log', {
  * Relationships
  */
 log.belongsTo(log_info, { constraints: false });
+log_info.hasOne(log, { constraints: false });
 
 /**
  * Synchronise
@@ -31,5 +32,6 @@ log.belongsTo(log_info, { constraints: false });
 log.sync().then(function() {
     info('Log sync completed');
 });
+
 
 module.exports = log;
