@@ -17,6 +17,9 @@ var log_info = db.define('logInfo', {
     },
     project: {
         type: Sequelize.STRING
+    },
+    week: {
+        type: Sequelize.INTEGER
     }
 });
 
