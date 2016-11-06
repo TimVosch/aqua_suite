@@ -79,7 +79,7 @@ $('#submitLog').on('click', function () {
     var data = {
         project: _repo,
         week: _week,
-        subtitle: _subtitle,
+        title: _subtitle,
         comments: _comments
     };
     // POST to api
