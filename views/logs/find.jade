@@ -1,0 +1,20 @@
+extends ../layouts/layout
+
+block content
+    .row
+        .col-sm-12
+            .panel.panel-default
+                .panel-heading
+                    | Results
+                .panel-body(style='max-height: 400px; overflow-y: scroll;')
+                    .list-group#commitsList
+                        - for (var i=0; i<logsinfos.length; i++) {
+                        - var x = logsinfos[i];
+                        .list-group-item
+                            h4.list-group-item-heading
+                                | #{x.project} > #{x.week}
+                            span.list-group-item-text
+                                | #{x.title}
+                                a(href='/logs/get/1', target="_blank").pull-right
+                                    | View changes
+                        - }

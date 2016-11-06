@@ -19,8 +19,16 @@ router.get('/create', function (req, res, next) {
 });
 
 router.get('/find', function (req, res, next) {
-    return log_info.findAll().then(function (metas) {
-        res.json(metas);
+    var json = {
+        pageName: "Find existing log"
+    };
+    return log_info.findAll().then(function (logsinfos) {
+        json.logsinfos = logsinfos;
+        return res.format({
+            html: function (){
+                res.render('logs/find', json);
+            },
+        })
     });
 });
 
