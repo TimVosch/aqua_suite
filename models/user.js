@@ -4,7 +4,7 @@ var info = debug('aqua:database');
 /**
  * Database
  */
-var Sequelize = require('Sequelize')
+var Sequelize = require('sequelize');
 var db = require('../database');
 
 /**

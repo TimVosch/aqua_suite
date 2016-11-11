@@ -5,7 +5,7 @@ var user = require('./user');
 /**
  * Database
  */
-var Sequelize = require('Sequelize')
+var Sequelize = require('sequelize')
 var db = require('../database');
 
 /**

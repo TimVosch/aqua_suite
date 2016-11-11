@@ -5,7 +5,7 @@ var log_info = require('./log_info');
 /**
  * Database
  */
-var Sequelize = require('Sequelize')
+var Sequelize = require('sequelize')
 var db = require('../database');
 
 /**
