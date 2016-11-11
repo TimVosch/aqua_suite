@@ -1,5 +1,6 @@
 var debug = require('debug');
 var info = debug('aqua:database');
+var user = require('./user');
 
 /**
  * Database
@@ -10,24 +11,26 @@ var db = require('../database');
 /**
  * Defining
  */
-var user = db.define('user', {
-    firstname: {
+var userCredentials = db.define('userCredentials', {
+    username: {
         type: Sequelize.STRING
     },
-    githubname: {
+    password: {
         type: Sequelize.STRING
-    }
+    },
 });
 
 /**
  * Relationships
  */
+userCredentials.belongsTo(user);
+user.hasOne(userCredentials);
 
 /**
  * Synchronise
  */
-user.sync().then(function () {
-    info('User sync completed')
+userCredentials.sync().then(function () {
+    info('userCredentials sync completed')
 });
 
-module.exports = user;
+module.exports = userCredentials;
