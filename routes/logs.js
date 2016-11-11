@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var user = require('../models/user');
-var log_info = require('../models/log_info');
+var userModel = require('../models/user');
 var log = require('../models/log');
 var logs = require('../api/logs');
 
@@ -22,12 +21,16 @@ router.get('/find', function (req, res, next) {
     var json = {
         pageName: "Find existing log"
     };
-    return log_info.findAll().then(function (logsinfos) {
-        json.logsinfos = logsinfos;
+    return log.findAll({ include: [ { model: userModel, as: 'creator' } ] }).then(function (logs) {
+        json.logs = logs;
         return res.format({
             html: function (){
                 res.render('logs/find', json);
             },
+
+            json: function () {
+                res.json(json);
+            }
         })
     });
 });
@@ -36,7 +39,7 @@ router.get('/get/:id', function (req, res, next) {
     var json = {
         pageName: "Viewing log",
     }
-    log.findById(req.params.id, { include: [log_info] }).then(function(Log) {
+    log.findById(req.params.id).then(function(Log) {
         var commitHistory = JSON.parse(Log.commitHistory);
         Log.commitHistory = commitHistory;
         json.log = Log;

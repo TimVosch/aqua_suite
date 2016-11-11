@@ -1,6 +1,6 @@
 var debug = require('debug');
 var info = debug('aqua:database');
-var log_info = require('./log_info');
+var user = require('./user');
 
 /**
  * Database
@@ -12,6 +12,15 @@ var db = require('../database');
  * Definition
  */
 var log = db.define('log', {
+    title: {
+        type: Sequelize.STRING
+    },
+    project: {
+        type: Sequelize.STRING
+    },
+    week: {
+        type: Sequelize.INTEGER
+    },
     commitHistory: {
         type: Sequelize.TEXT,
     },
@@ -23,8 +32,7 @@ var log = db.define('log', {
 /**
  * Relationships
  */
-log.belongsTo(log_info, { constraints: false });
-log_info.hasOne(log, { constraints: false });
+log.belongsTo(user, { as: 'creator', constraints: false });
 
 /**
  * Synchronise

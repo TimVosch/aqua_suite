@@ -6,15 +6,27 @@ block content
             .panel.panel-default
                 .panel-heading
                     | Results
-                .panel-body(style='max-height: 400px; overflow-y: scroll;')
-                    .list-group#commitsList
-                        - for (var i=0; i<logsinfos.length; i++) {
-                        - var x = logsinfos[i];
-                        .list-group-item
-                            h4.list-group-item-heading
-                                | #{x.project} > #{x.week}
-                            span.list-group-item-text
-                                | #{x.title}
-                                a(href='/logs/get/1', target="_blank").pull-right
-                                    | View changes
-                        - }
+                .panel-body
+                    .col-sm-12
+                        table.table.table-striped.text-center
+                            thead
+                                tr
+                                    th|ID
+                                    th|User
+                                    th|Project
+                                    th|Week
+                                    th|Description
+                                    th|View
+                            tbody
+                                - for (var i=0; i<logs.length; i++) {
+                                - var x = logs[i];
+                                tr
+                                    td=x.id
+                                    td=x.creator.firstname
+                                    td=x.project
+                                    td=x.week
+                                    td=x.title
+                                    td
+                                        a(href='/logs/get/'+x.id, target="_blank")
+                                            | View changes
+                                - }
