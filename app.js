@@ -16,6 +16,7 @@ var users = require('./routes/users');
 
 // Middleware
 var jwt = require('./middleware/jwt');
+var node_jwt = require('jsonwebtoken');
 var jsonwebtoken = require('express-jwt');
 
 // Other
@@ -42,12 +43,18 @@ app.use('/login', jsonwebtoken({
     secret: process.env.SHARED_SECRET,
     credentialsRequired: false,
     getToken: function (req) {
+        var token = null;
         if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-            return req.headers.authorization.split(' ')[1];
+            token = req.headers.authorization.split(' ')[1];
         } else if (req.cookies.jwtoken) {
-            return req.cookies.jwtoken;
+            token = req.cookies.jwtoken;
         }
-        return null;
+        try {
+            node_jwt.verify(token, process.env.SHARED_SECRET);
+            return token;
+        } catch( e ) {
+            return null;
+        }
     }
 }), login);
 app.use('/logs', jwt, logs);
@@ -70,12 +77,15 @@ app.use(function (err, req, res, next) {
         res.format({
             // Redirect to login if requester is viewer
             html: function () {
-                return res.redirect('/login');
+                if (req.path == '/login')
+                    return;
+                else
+                    return res.redirect('/login');
             },
 
-            // Send 403 FORBIDDEN if requester is for api
             json: function () {
-                return res.sendStatus(403);
+                res.status(401);
+                return res.json({ error:true, message: err.message});
             }
         });
     }
