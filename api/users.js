@@ -3,7 +3,7 @@ var info = debug('aqua:api_users');
 var request = require('request');
 
 // Database models
-var user_model = require('../models/user');
+var userModel = require('../models/user');
 
 var users = {};
 
@@ -13,7 +13,7 @@ var users = {};
 users.getProjects = function (username) {
     return new Promise(function (resolve, reject) {
         // Find user in database
-        user_model.findOne({
+        userModel.findOne({
             where: {
                 username
             }
@@ -113,7 +113,7 @@ users.getProjectCommits = function(username, repo_owner, repo_name, since, until
     var githubname = undefined;
     return new Promise(function (resolve, reject) {
         // Check if user is involved
-        user_model.findOne({
+        userModel.findOne({
             where: {
                 username
             }
