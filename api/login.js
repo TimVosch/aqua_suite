@@ -1,6 +1,6 @@
 var jwt = require('jsonwebtoken');
 var userCredentialsModel = require('../models/user_credentials');
-var user = require('../models/user');
+var userModel = require('../models/user');
 
 module.exports = {
 
@@ -25,20 +25,19 @@ module.exports = {
     createSession: function (username, password) {
         return new Promise(function (resolve, reject) {
             // Find corresponding user in database
-            userCredentialsModel.findOne({
+            userModel.findOne({
                 where: { username },
-                include: [user]
+                include: [userCredentialsModel]
             })
-            .then(function (_userCredentials) {
+            .then(function (_user) {
                 // If user is found and passwords are equal then login is correct
-                if (_userCredentials && _userCredentials.password == password) {
+                if (_user && _user.userCredential.password == password) {
                     // Create token
-                    console.log(_userCredentials);
                     var token = jwt.sign({
-                        id: _userCredentials.id,
-                        username: _userCredentials.username,
-                        firstname: _userCredentials.user.firstname,
-                        githubname: _userCredentials.user.githubname
+                        id: _user.id,
+                        username: _user.username,
+                        firstname: _user.firstname,
+                        githubname: _user.githubname
                     }, process.env.SHARED_SECRET, { expiresIn: 60 * 60 * 12 });
                     
                     return resolve(token);

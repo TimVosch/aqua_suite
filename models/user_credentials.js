@@ -12,9 +12,6 @@ var db = require('../database');
  * Defining
  */
 var userCredentials = db.define('userCredentials', {
-    username: {
-        type: Sequelize.STRING
-    },
     password: {
         type: Sequelize.STRING
     },

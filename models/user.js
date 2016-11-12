@@ -11,6 +11,9 @@ var db = require('../database');
  * Defining
  */
 var user = db.define('user', {
+    username: {
+        type: Sequelize.STRING
+    },
     firstname: {
         type: Sequelize.STRING
     },
